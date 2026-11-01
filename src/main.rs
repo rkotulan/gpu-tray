@@ -270,7 +270,9 @@ impl App {
         if ev.id == *self.restart.id() {
             self.confirm_restart();
         } else if ev.id == *self.autostart.id() {
-            set_autostart(self.autostart.is_checked());
+            // Přepínat podle registru, ne podle is_checked(): stav zaškrtnutí položky se po kliknutí
+            // v tray menu nemusí změnit (menu se přestavuje), takže by se zapisovalo pořád "vypnuto".
+            set_autostart(!autostart_enabled());
             let on = autostart_enabled();
             self.autostart.set_checked(on);
             self.autostart.set_text(autostart_label(on));
